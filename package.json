@@ -1,0 +1,14 @@
+{
+  "name": "ogsp-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd ogsp/frontend && npm install && npm run build",
+    "start": "cd ogsp/frontend && npm start",
+    "install-frontend": "cd ogsp/frontend && npm install"
+  },
+  "workspaces": [
+    "ogsp/frontend",
+    "backend"
+  ]
+}
