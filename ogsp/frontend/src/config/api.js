@@ -3,14 +3,33 @@
 
 // Get API base URL from environment variable
 const getApiBaseUrl = () => {
-  // Use environment variable for production
-  return process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  // Use environment variable for production, with explicit fallback
+  const envUrl = process.env.REACT_APP_API_BASE_URL;
+  
+  // Debug logging
+  console.log('Environment check:', {
+    NODE_ENV: process.env.NODE_ENV,
+    REACT_APP_API_BASE_URL: envUrl,
+    location: window.location.origin
+  });
+  
+  // For production deployment, always use the production backend
+  if (window.location.origin === 'https://ogsp.vercel.app') {
+    return 'https://project-bj5p.onrender.com';
+  }
+  
+  // Use environment variable or fallback
+  return envUrl || 'http://localhost:5000';
 };
 
 const API_BASE_URL = getApiBaseUrl();
 
 // Debug: Log the API base URL (can be removed in production)
+console.log('=== API CONFIGURATION ===');
 console.log('API Base URL:', API_BASE_URL);
+console.log('Frontend Origin:', window.location.origin);
+console.log('Environment:', process.env.NODE_ENV);
+console.log('========================');
 
 export { API_BASE_URL };
 
