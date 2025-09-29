@@ -1,6 +1,14 @@
 {
-  "buildCommand": "cd ogsp/frontend && npm install && npm run vercel-build",
-  "outputDirectory": "ogsp/frontend/build",
+  "version": 2,
+  "builds": [
+    {
+      "src": "ogsp/frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
