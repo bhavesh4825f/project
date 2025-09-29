@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-// Get API base URL from environment variable
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+import { API_BASE_URL } from "../config/api.js";
 
 // Debug: Log the API base URL and test backend connection
-console.log('API Base URL:', API_BASE_URL);
+console.log('Home.jsx - API Base URL:', API_BASE_URL);
 console.log('Environment:', process.env.NODE_ENV);
 console.log('All REACT_APP env vars:', Object.keys(process.env).filter(key => key.startsWith('REACT_APP_')));
 
