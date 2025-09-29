@@ -19,12 +19,49 @@ const app = express();
 // ---------------------
 // Middleware
 // ---------------------
-app.use(cors());
+const corsOptions = {
+  origin: [
+    'http://localhost:3000', // Local development
+    'https://project-nz5c2pquk-bhavesh4825fs-projects.vercel.app', // Your Vercel deployment
+    'https://*.vercel.app', // Any Vercel deployment
+    'https://vercel.app' // Vercel domains
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Static uploads folder
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// ---------------------
+// Health Check Route
+// ---------------------
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Government Services Portal Backend is running!",
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      health: "/",
+      services: "/api/service/active",
+      auth: "/api/auth/login",
+      register: "/api/auth/register"
+    }
+  });
+});
+
+app.get("/api/health", (req, res) => {
+  res.json({
+    success: true,
+    message: "API is healthy",
+    timestamp: new Date().toISOString()
+  });
+});
 
 // ---------------------
 // API Routes
