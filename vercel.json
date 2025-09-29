@@ -1,21 +1,10 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "ogsp/frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
-    }
-  ],
+  "buildCommand": "cd ogsp/frontend && npm install && npm run vercel-build",
+  "outputDirectory": "ogsp/frontend/build",
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/ogsp/frontend/build/$1"
+      "dest": "/index.html"
     }
-  ],
-  "env": {
-    "REACT_APP_API_BASE_URL": "https://project-bj5p.onrender.com"
-  }
+  ]
 }
