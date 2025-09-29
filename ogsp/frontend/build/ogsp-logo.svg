@@ -1,0 +1,111 @@
+<svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="80" fill="#f8fafc" rx="8"/>
+  
+  <!-- Authentic Lion Capital of Ashoka -->
+  <g transform="translate(10, 8)">
+    <!-- Lotus Base (Bottom) -->
+    <ellipse cx="25" cy="52" rx="22" ry="4" fill="#8b5cf6"/>
+    <rect x="3" y="48" width="44" height="8" fill="#6366f1" rx="1"/>
+    
+    <!-- Abacus with Animals -->
+    <rect x="5" y="40" width="40" height="8" fill="#d97706" rx="1"/>
+    <!-- Simplified animals on abacus -->
+    <circle cx="12" cy="44" r="1.5" fill="#ffffff"/>
+    <circle cx="25" cy="44" r="1.5" fill="#ffffff"/>
+    <circle cx="38" cy="44" r="1.5" fill="#ffffff"/>
+    
+    <!-- Ashoka Chakra (Wheel) -->
+    <circle cx="25" cy="32" r="10" fill="none" stroke="#1e40af" stroke-width="2"/>
+    <circle cx="25" cy="32" r="6" fill="none" stroke="#1e40af" stroke-width="1"/>
+    <circle cx="25" cy="32" r="1" fill="#1e40af"/>
+    
+    <!-- 24 Spokes -->
+    <g stroke="#1e40af" stroke-width="0.8">
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(0 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(15 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(30 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(45 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(60 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(75 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(90 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(105 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(120 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(135 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(150 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(165 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(180 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(195 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(210 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(225 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(240 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(255 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(270 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(285 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(300 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(315 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(330 25 32)"/>
+      <line x1="25" y1="22" x2="25" y2="26" transform="rotate(345 25 32)"/>
+    </g>
+    
+    <!-- Three Lions (Authentic Design) -->
+    <g fill="#d97706">
+      <!-- Front Lion (Detailed) -->
+      <ellipse cx="25" cy="18" rx="3" ry="5"/>
+      <!-- Lion mane -->
+      <circle cx="23" cy="15" r="1" fill="#b45309"/>
+      <circle cx="27" cy="15" r="1" fill="#b45309"/>
+      <circle cx="25" cy="14" r="1" fill="#b45309"/>
+      <!-- Lion eyes -->
+      <circle cx="23.5" cy="16" r="0.3" fill="#000"/>
+      <circle cx="26.5" cy="16" r="0.3" fill="#000"/>
+      <!-- Lion nose -->
+      <ellipse cx="25" cy="17.5" rx="0.4" ry="0.2" fill="#000"/>
+      
+      <!-- Left Lion (Profile) -->
+      <ellipse cx="18" cy="18" rx="2.5" ry="4"/>
+      <circle cx="16" cy="15" r="0.8" fill="#b45309"/>
+      <circle cx="19" cy="15" r="0.8" fill="#b45309"/>
+      <circle cx="17" cy="16" r="0.2" fill="#000"/>
+      
+      <!-- Right Lion (Profile) -->
+      <ellipse cx="32" cy="18" rx="2.5" ry="4"/>
+      <circle cx="31" cy="15" r="0.8" fill="#b45309"/>
+      <circle cx="34" cy="15" r="0.8" fill="#b45309"/>
+      <circle cx="33" cy="16" r="0.2" fill="#000"/>
+    </g>
+    
+    <!-- Crown/Top ornament -->
+    <circle cx="25" cy="12" r="2" fill="#fbbf24"/>
+    <polygon points="25,10 26,8 25,9 24,8" fill="#f59e0b"/>
+  </g>
+  
+  <!-- OGSP Text -->
+  <text x="65" y="20" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af">OGSP</text>
+  <text x="65" y="32" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Online Government</text>
+  <text x="65" y="42" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Service Portal</text>
+  
+  <!-- National Elements -->
+  <g transform="translate(130, 15)">
+    <!-- Satyameva Jayate -->
+    <text x="25" y="10" font-family="Arial, sans-serif" font-size="7" fill="#d97706" text-anchor="middle">सत्यमेव जयते</text>
+    
+    <!-- Indian Tricolor -->
+    <rect x="15" y="15" width="20" height="2" fill="#ff9933"/>
+    <rect x="15" y="17" width="20" height="2" fill="#ffffff" stroke="#ccc" stroke-width="0.3"/>
+    <rect x="15" y="19" width="20" height="2" fill="#138808"/>
+    
+    <!-- Quality Indicators -->
+    <circle cx="10" cy="30" r="2.5" fill="#10b981"/>
+    <text x="10" y="32" font-family="Arial" font-size="4" fill="#fff" text-anchor="middle">✓</text>
+    <text x="10" y="38" font-family="Arial" font-size="5" fill="#10b981" text-anchor="middle">Secure</text>
+    
+    <circle cx="25" cy="30" r="2.5" fill="#3b82f6"/>
+    <text x="25" y="32" font-family="Arial" font-size="4" fill="#fff" text-anchor="middle">24</text>
+    <text x="25" y="38" font-family="Arial" font-size="5" fill="#3b82f6" text-anchor="middle">24/7</text>
+    
+    <circle cx="40" cy="30" r="2.5" fill="#f59e0b"/>
+    <text x="40" y="32" font-family="Arial" font-size="4" fill="#fff" text-anchor="middle">⚡</text>
+    <text x="40" y="38" font-family="Arial" font-size="5" fill="#f59e0b" text-anchor="middle">Fast</text>
+  </g>
+</svg>

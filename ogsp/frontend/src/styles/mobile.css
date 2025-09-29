@@ -1,0 +1,174 @@
+/* Mobile Responsive Styles for OGSP */
+
+/* Desktop - Sidebar always visible */
+@media (min-width: 992px) {
+  .sidebar {
+    transform: translateX(0) !important;
+    position: relative !important;
+  }
+}
+
+/* Mobile - Sidebar hidden by default */
+@media (max-width: 991.98px) {
+  .sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+  
+  /* Adjust main content padding on mobile */
+  .flex-grow-1 {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+  
+  /* Hide breadcrumbs on small screens */
+  .breadcrumb {
+    display: none;
+  }
+  
+  /* Adjust header spacing */
+  .header-left h4 {
+    font-size: 1.1rem;
+  }
+  
+  /* Make time display smaller on mobile */
+  .time-display {
+    font-size: 0.8rem;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 575.98px) {
+  .container-fluid {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  .header-left h4 {
+    font-size: 1rem;
+  }
+  
+  .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Hover effects for sidebar */
+.hover-link:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transform: translateX(5px);
+}
+
+.sidebar-nav .nav-link.active {
+  font-weight: 600;
+}
+
+/* Smooth transitions */
+.sidebar {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Overlay for mobile */
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+}
+
+/* Card responsiveness */
+.card {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 767.98px) {
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .table-responsive {
+    font-size: 0.9rem;
+  }
+  
+  .btn {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Form responsiveness */
+@media (max-width: 575.98px) {
+  .form-control, .form-select {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+}
+
+/* Navigation improvements */
+.navbar-toggler {
+  border: none;
+  padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/* Footer responsiveness */
+@media (max-width: 767.98px) {
+  .footer {
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .footer .row > div {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Application-specific improvements */
+.application-card {
+  transition: all 0.3s ease;
+}
+
+.application-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Status badges */
+.badge {
+  font-size: 0.75em;
+  padding: 0.35em 0.65em;
+}
+
+/* Responsive text sizes */
+.fs-mobile-1 { font-size: 1.5rem !important; }
+.fs-mobile-2 { font-size: 1.25rem !important; }
+.fs-mobile-3 { font-size: 1.1rem !important; }
+.fs-mobile-4 { font-size: 1rem !important; }
+.fs-mobile-5 { font-size: 0.9rem !important; }
+.fs-mobile-6 { font-size: 0.8rem !important; }
+
+@media (max-width: 575.98px) {
+  .fs-1 { font-size: 1.5rem !important; }
+  .fs-2 { font-size: 1.25rem !important; }
+  .fs-3 { font-size: 1.1rem !important; }
+  .fs-4 { font-size: 1rem !important; }
+  .fs-5 { font-size: 0.9rem !important; }
+  .fs-6 { font-size: 0.8rem !important; }
+}
