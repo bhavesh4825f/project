@@ -5,6 +5,7 @@ import axios from "axios";
 import Layout from "../components/Layout";
 import PaymentModal from "../components/PaymentModal";
 import SuccessToast from "../components/SuccessToast";
+import { API_BASE_URL } from '../config/api';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const IncomeCertificate = () => {
@@ -66,7 +67,7 @@ const IncomeCertificate = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.post("http://localhost:5000/api/application/submit", data, {
+      const res = await axios.post(`${API_BASE_URL}/api/application/submit`, data, {
         headers: { 
           "Content-Type": "multipart/form-data",
           "Authorization": `Bearer ${token}`

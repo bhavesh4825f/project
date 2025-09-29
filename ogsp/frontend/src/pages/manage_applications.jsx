@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
+import { API_BASE_URL } from '../config/api';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const ManageApplications = () => {
@@ -28,7 +29,7 @@ const ManageApplications = () => {
 
   const fetchApplications = async (token) => {
     try {
-      const res = await axios.get("http://localhost:5000/api/application/all", {
+      const res = await axios.get(`${API_BASE_URL}/api/application/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -51,7 +52,7 @@ const ManageApplications = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.patch(
-        `http://localhost:5000/api/application/update-status/${applicationId}`,
+        `${API_BASE_URL}/api/application/update-status/${applicationId}`,
         { status: newStatus, remarks: message },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -151,7 +152,7 @@ const ManageApplications = () => {
                               <div className="d-flex gap-1">
                                 {app.documents?.adharcard && (
                                   <a 
-                                    href={`http://localhost:5000/uploads/${app.documents.adharcard}`} 
+                                    href={`${API_BASE_URL}/uploads/${app.documents.adharcard}`} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="text-primary text-decoration-none"
@@ -162,7 +163,7 @@ const ManageApplications = () => {
                                 {app.documents?.adharcard && app.documents?.passport_photo && " | "}
                                 {app.documents?.passport_photo && (
                                   <a 
-                                    href={`http://localhost:5000/uploads/${app.documents.passport_photo}`} 
+                                    href={`${API_BASE_URL}/uploads/${app.documents.passport_photo}`} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="text-primary text-decoration-none"

@@ -5,6 +5,7 @@ import Layout from "../components/Layout";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PaymentModal from "../components/PaymentModal";
 import SuccessToast from "../components/SuccessToast";
+import { API_BASE_URL } from '../config/api';
 
 export default function ApplyCaste() {
   const navigate = useNavigate();
@@ -95,7 +96,7 @@ export default function ApplyCaste() {
       submitData.append('applicationType', 'Caste Certificate');
       submitData.append('userId', user._id);
 
-      const response = await axios.post('http://localhost:5000/api/application/submit', submitData, {
+      const response = await axios.post(`${API_BASE_URL}/api/application/submit`, submitData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

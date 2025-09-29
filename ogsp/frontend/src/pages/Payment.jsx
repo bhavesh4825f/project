@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Layout from '../components/Layout';
-import "bootstrap/dist/css/bootstrap.min.css";
+import { API_BASE_URL } from '../config/api';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Payment = () => {
   const { id } = useParams();
@@ -45,7 +46,7 @@ const Payment = () => {
       setLoading(true);
       setError('');
       
-      const response = await axios.get(`http://localhost:5000/api/application/details/${id}`, {
+      const response = await axios.get(`${API_BASE_URL}/api/application/details/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -80,7 +81,7 @@ const Payment = () => {
       setPaymentLoading(true);
       
       const response = await axios.post(
-        "http://localhost:5000/api/payment/process",
+        `${API_BASE_URL}/api/payment/process`,
         {
           applicationId: id,
           serviceType: application.applicationType,

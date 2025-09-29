@@ -1,6 +1,7 @@
 // ServiceFormModal.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const ServiceFormModal = ({ show, onClose, service, onSuccess }) => {
@@ -187,14 +188,14 @@ const ServiceFormModal = ({ show, onClose, service, onSuccess }) => {
       if (service) {
         // Update existing service
         response = await axios.put(
-          `http://localhost:5000/api/service/admin/${service._id}`,
+          `${API_BASE_URL}/api/service/admin/${service._id}`,
           payload,
           { headers: { Authorization: `Bearer ${token}` }}
         );
       } else {
         // Create new service
         response = await axios.post(
-          'http://localhost:5000/api/service/admin/create',
+          `${API_BASE_URL}/api/service/admin/create`,
           payload,
           { headers: { Authorization: `Bearer ${token}` }}
         );

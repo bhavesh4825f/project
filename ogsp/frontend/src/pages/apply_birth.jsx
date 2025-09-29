@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import PaymentModal from "../components/PaymentModal";
 import SuccessToast from "../components/SuccessToast";
 import Layout from "../components/Layout";
+import { API_BASE_URL } from '../config/api';
 
 export default function ApplyBirth() {
   const navigate = useNavigate();
@@ -114,7 +115,7 @@ export default function ApplyBirth() {
       submitData.append('applicationType', 'Birth Certificate');
       submitData.append('userId', user._id);
 
-      const response = await axios.post('http://localhost:5000/api/application/submit', submitData, {
+      const response = await axios.post(`${API_BASE_URL}/api/application/submit`, submitData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

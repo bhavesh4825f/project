@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Layout from "../components/Layout";
+import { API_BASE_URL } from '../config/api';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function ManageUsers() {
@@ -60,8 +61,8 @@ export default function ManageUsers() {
             setLoading(true);
             const token = localStorage.getItem('token');
             const url = searchTerm 
-                ? `http://localhost:5000/api/admin/users?search=${encodeURIComponent(searchTerm)}`
-                : 'http://localhost:5000/api/admin/users';
+                ? `${API_BASE_URL}/api/admin/users?search=${encodeURIComponent(searchTerm)}`
+                : `${API_BASE_URL}/api/admin/users`;
                 
             const response = await axios.get(url, {
                 headers: {
@@ -98,7 +99,7 @@ export default function ManageUsers() {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.put(`http://localhost:5000/api/admin/users/${editingUser._id}`, 
+            const response = await axios.put(`${API_BASE_URL}/api/admin/users/${editingUser._id}`, 
                 editForm,
                 {
                     headers: {
@@ -124,7 +125,7 @@ export default function ManageUsers() {
     const handleDeleteUser = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.delete(`http://localhost:5000/api/admin/users/${deletingUser._id}`, {
+            const response = await axios.delete(`${API_BASE_URL}/api/admin/users/${deletingUser._id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

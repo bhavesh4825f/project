@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Layout from "../components/Layout";
+import { API_BASE_URL } from '../config/api';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { API_ENDPOINTS } from '../config/api';
 
@@ -115,7 +116,7 @@ const SendDocument = () => {
     formData.append("sendingNotes", "");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/application/send-document", formData, {
+      const response = await axios.post(`${API_BASE_URL}/api/application/send-document`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -155,7 +156,7 @@ const SendDocument = () => {
     formData.append("sendingNotes", "");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/application/send-document", formData, {
+      const response = await axios.post(`${API_BASE_URL}/api/application/send-document`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

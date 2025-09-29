@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Layout from "../components/Layout";
+import { API_BASE_URL } from '../config/api';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function AdminPaymentHistory() {
@@ -26,9 +27,9 @@ export default function AdminPaymentHistory() {
     try {
       const token = localStorage.getItem("token");
       console.log("Fetching payments with token:", token ? "Token exists" : "No token");
-      console.log("Making request to:", "http://localhost:5000/api/payment/admin/history");
+      console.log("Making request to:", `${API_BASE_URL}/api/payment/admin/history`);
       
-      const response = await axios.get("http://localhost:5000/api/payment/admin/history", {
+      const response = await axios.get(`${API_BASE_URL}/api/payment/admin/history`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

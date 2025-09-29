@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Layout from '../components/Layout';
+import { API_BASE_URL } from '../config/api';
 
 const ApplicationDetails = () => {
   const { id } = useParams();
@@ -15,7 +16,7 @@ const ApplicationDetails = () => {
   const fetchApplicationDetails = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/applications/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/applications/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -157,7 +158,7 @@ const ApplicationDetails = () => {
                               <i className="bi bi-file-earmark-text fs-1 text-primary mb-2"></i>
                               <p className="card-text small text-break flex-grow-1">{doc}</p>
                               <a 
-                                href={`http://localhost:5000/uploads/${doc}`} 
+                                href={`${API_BASE_URL}/uploads/${doc}`} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 className="btn btn-sm btn-outline-primary mt-auto"

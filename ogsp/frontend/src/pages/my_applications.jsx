@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import Layout from "../components/Layout";
+import { API_BASE_URL } from '../config/api';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const MyApplications = () => {
@@ -28,7 +29,7 @@ const MyApplications = () => {
 
   const fetchApplications = async (token) => {
     try {
-      const res = await axios.get("http://localhost:5000/api/application/my-applications", {
+      const res = await axios.get(`${API_BASE_URL}/api/application/my-applications`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

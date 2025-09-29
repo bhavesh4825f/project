@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Layout from "../components/Layout";
+import { API_BASE_URL } from '../config/api';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function AdminApplications() {
@@ -30,7 +31,7 @@ export default function AdminApplications() {
   const fetchAllApplications = async (token) => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/api/application/all-debug", {
+      const response = await axios.get(`${API_BASE_URL}/api/application/all-debug`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -53,7 +54,7 @@ export default function AdminApplications() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.patch(
-        `http://localhost:5000/api/application/update-status/${applicationId}`,
+        `${API_BASE_URL}/api/application/update-status/${applicationId}`,
         { status: newStatus, remarks: message },
         {
           headers: {
@@ -79,7 +80,7 @@ export default function AdminApplications() {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.delete(
-          `http://localhost:5000/api/application/${applicationId}`,
+          `${API_BASE_URL}/api/application/${applicationId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

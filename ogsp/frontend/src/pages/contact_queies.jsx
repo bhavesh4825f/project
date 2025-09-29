@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Layout from "../components/Layout";
+import { API_BASE_URL } from '../config/api';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AdminContact = () => {
@@ -33,7 +34,7 @@ const AdminContact = () => {
       setLoading(true);
       
       // Fetch real data from backend API
-      const response = await axios.get("http://localhost:5000/api/contact/queries");
+      const response = await axios.get(`${API_BASE_URL}/api/contact/queries`);
       
       if (response.data.success) {
         // Sort by newest first
@@ -84,7 +85,7 @@ const AdminContact = () => {
     try {
       console.log("Updating query status:", queryId, "to", newStatus); // Debug log
       
-      const response = await axios.patch(`http://localhost:5000/api/contact/queries/${queryId}`, {
+      const response = await axios.patch(`${API_BASE_URL}/api/contact/queries/${queryId}`, {
         status: newStatus
       });
       
@@ -133,7 +134,7 @@ const AdminContact = () => {
     }
 
     try {
-      const response = await axios.delete(`http://localhost:5000/api/contact/queries/${queryId}`);
+      const response = await axios.delete(`${API_BASE_URL}/api/contact/queries/${queryId}`);
       
       if (response.data.success) {
         // Update local state by removing the deleted query

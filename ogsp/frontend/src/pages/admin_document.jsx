@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Layout from "../components/Layout";
+import { API_BASE_URL } from '../config/api';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function AdminDocuments() {
@@ -28,7 +29,7 @@ export default function AdminDocuments() {
   const fetchAllApplications = async (token) => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/api/application/all-debug", {
+      const response = await axios.get(`${API_BASE_URL}/api/application/all-debug`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

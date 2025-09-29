@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Layout from "../components/Layout";
+import { API_BASE_URL } from '../config/api';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const DocumentHistory = () => {
@@ -26,7 +27,7 @@ const DocumentHistory = () => {
 
   const fetchDocuments = async (token) => {
     try {
-      const res = await axios.get("http://localhost:5000/api/application/my-documents", {
+      const res = await axios.get(`${API_BASE_URL}/api/application/my-documents`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -75,7 +76,7 @@ const DocumentHistory = () => {
 
   const downloadDocument = (documentPath, fileName) => {
     // Use documentPath directly since it already contains the full path
-    const downloadUrl = `http://localhost:5000/${documentPath}`;
+    const downloadUrl = `${API_BASE_URL}/${documentPath}`;
     window.open(downloadUrl, '_blank');
   };
 

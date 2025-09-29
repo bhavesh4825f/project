@@ -3,16 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-// Dynamic API base URL for mobile compatibility
-const getApiBaseUrl = () => {
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://localhost:5000';
-  } else {
-    return `http://${window.location.hostname}:5000`;
-  }
-};
-
-const API_BASE_URL = getApiBaseUrl();
+// Get API base URL from environment variable
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
 
 // Custom styles for logo and branding
 const customStyles = `
