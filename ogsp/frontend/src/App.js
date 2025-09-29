@@ -23,6 +23,7 @@ import ApplicationDetails from "./pages/ApplicationDetails";
 import PriceManagement from "./pages/price_management";
 import ServiceManagement from "./pages/ServiceManagement";
 import DynamicServiceApplication from "./pages/DynamicServiceApplication";
+import DebugAPI from "./pages/DebugAPI";
 
 
 export default function App() {
@@ -62,6 +63,7 @@ export default function App() {
         <Route path="/price-management" element={<PriceManagement />} />
         <Route path="/service-management" element={<ServiceManagement />} />
         <Route path="/application-details/:id" element={<ApplicationDetails />} />
+        <Route path="/debug-api" element={<DebugAPI />} />
       </Routes>
     </Router>
   );

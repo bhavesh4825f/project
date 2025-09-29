@@ -30,8 +30,29 @@ const Register = () => {
         alert(data.message);
       }
     } catch (err) {
-      console.error("Register error:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Server error");
+      console.error("Register error:", err);
+      console.error("Error details:", {
+        message: err.message,
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+        data: err.response?.data,
+        url: err.config?.url
+      });
+      
+      let errorMessage = "Registration failed. ";
+      if (err.code === 'ECONNABORTED') {
+        errorMessage += "Request timeout - server is slow to respond.";
+      } else if (err.response?.status === 404) {
+        errorMessage += "Registration endpoint not found. Check backend deployment.";
+      } else if (err.response?.status >= 500) {
+        errorMessage += "Server error. Please try again later.";
+      } else if (err.message.includes('Network Error')) {
+        errorMessage += "Cannot connect to server. Check if backend is deployed.";
+      } else {
+        errorMessage += err.response?.data?.message || err.message || "Unknown error occurred.";
+      }
+      
+      alert(errorMessage);
     }
   };
 

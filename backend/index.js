@@ -11,6 +11,7 @@ import applicationRoutes from "./routes/application.js";
 import contactRoutes from "./routes/contact.js";
 import paymentRoutes from "./routes/payment.js";
 import serviceRoutes from "./routes/service.js";
+import { initializeDatabase } from "./utils/initDatabase.js";
 
 dotenv.config();
 
@@ -89,6 +90,20 @@ app.get("/api/db-test", async (req, res) => {
       message: "Database test failed",
       error: error.message,
       timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// Database initialization endpoint
+app.get("/api/init-database", async (req, res) => {
+  try {
+    const result = await initializeDatabase();
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to initialize database",
+      error: error.message
     });
   }
 });

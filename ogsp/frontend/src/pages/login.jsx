@@ -34,8 +34,29 @@ const Login = () => {
         alert(res.data.message);
       }
     } catch (err) {
-      console.error("Login error:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Something went wrong!");
+      console.error("Login error:", err);
+      console.error("Error details:", {
+        message: err.message,
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+        data: err.response?.data,
+        url: err.config?.url
+      });
+      
+      let errorMessage = "Login failed. ";
+      if (err.code === 'ECONNABORTED') {
+        errorMessage += "Request timeout - server is slow to respond.";
+      } else if (err.response?.status === 404) {
+        errorMessage += "Login endpoint not found. Check backend deployment.";
+      } else if (err.response?.status >= 500) {
+        errorMessage += "Server error. Please try again later.";
+      } else if (err.message.includes('Network Error')) {
+        errorMessage += "Cannot connect to server. Check if backend is deployed.";
+      } else {
+        errorMessage += err.response?.data?.message || err.message || "Unknown error occurred.";
+      }
+      
+      alert(errorMessage);
     }
   };
 

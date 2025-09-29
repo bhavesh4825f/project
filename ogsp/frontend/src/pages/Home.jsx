@@ -6,6 +6,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // Get API base URL from environment variable
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
 
+// Debug: Log the API base URL and test backend connection
+console.log('API Base URL:', API_BASE_URL);
+console.log('Environment:', process.env.NODE_ENV);
+console.log('All REACT_APP env vars:', Object.keys(process.env).filter(key => key.startsWith('REACT_APP_')));
+
 // Custom styles for logo and branding
 const customStyles = `
   .navbar-brand:hover {
@@ -157,21 +162,67 @@ export default function App() {
     return servicePrices[serviceName] || defaultPrice;
   };
 
+  // Function to test backend connectivity
+  const testBackendConnection = async () => {
+    try {
+      console.log('Testing backend connection to:', `${API_BASE_URL}/api/health`);
+      const response = await axios.get(`${API_BASE_URL}/api/health`, { timeout: 10000 });
+      console.log('Backend health check response:', response.data);
+      return true;
+    } catch (err) {
+      console.error('Backend connection test failed:', err);
+      console.error('Error details:', {
+        message: err.message,
+        code: err.code,
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+        url: err.config?.url
+      });
+      return false;
+    }
+  };
+
   // Function to fetch active services
   const fetchServices = async () => {
     setServicesLoading(true);
     setServicesError(null);
+    
+    // First test backend connectivity
+    const isBackendConnected = await testBackendConnection();
+    if (!isBackendConnected) {
+      setServicesError('Backend server is not accessible. Please check if the backend is deployed and running.');
+      setServices([]);
+      setServicesLoading(false);
+      return;
+    }
+    
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/service/active`);
+      console.log('Fetching services from:', `${API_BASE_URL}/api/service/active`);
+      const response = await axios.get(`${API_BASE_URL}/api/service/active`, { timeout: 10000 });
+      console.log('Services response:', response.data);
+      
       if (response.data.success) {
         setServices(response.data.services);
       } else {
-        setServicesError('Failed to load services');
+        setServicesError('Failed to load services: ' + (response.data.message || 'Unknown error'));
       }
     } catch (err) {
       console.error('Error fetching services:', err);
-      setServicesError(`Unable to connect to services. ${err.message}`);
-      // Fallback to empty services if API fails
+      let errorMessage = 'Unable to connect to services.';
+      
+      if (err.code === 'ECONNABORTED') {
+        errorMessage = 'Request timeout - backend server is slow to respond.';
+      } else if (err.response?.status === 404) {
+        errorMessage = 'Services endpoint not found (404). Check backend deployment.';
+      } else if (err.response?.status >= 500) {
+        errorMessage = 'Backend server error. Please try again later.';
+      } else if (err.message.includes('Network Error')) {
+        errorMessage = 'Network error - cannot reach backend server.';
+      } else {
+        errorMessage += ` ${err.message}`;
+      }
+      
+      setServicesError(errorMessage);
       setServices([]);
     } finally {
       setServicesLoading(false);
