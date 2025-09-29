@@ -21,15 +21,28 @@ const app = express();
 // Middleware
 // ---------------------
 const corsOptions = {
-  origin: [
-    'http://localhost:3000', // Local development
-    'https://project-nz5c2pquk-bhavesh4825fs-projects.vercel.app', // Your Vercel deployment
-    'https://*.vercel.app', // Any Vercel deployment
-    'https://vercel.app' // Vercel domains
-  ],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'http://localhost:3000', // Local development
+      'https://ogsp.vercel.app', // Your main Vercel deployment
+      'https://project-nz5c2pquk-bhavesh4825fs-projects.vercel.app', // Your Vercel deployment
+    ];
+    
+    // Check if the origin is in our allowed list or is a vercel.app subdomain
+    if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+    
+    console.log('CORS blocked origin:', origin);
+    return callback(new Error('Not allowed by CORS'), false);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
 };
 
 app.use(cors(corsOptions));
@@ -60,6 +73,20 @@ app.get("/api/health", (req, res) => {
   res.json({
     success: true,
     message: "API is healthy",
+    timestamp: new Date().toISOString(),
+    cors: {
+      origin: req.headers.origin,
+      userAgent: req.headers['user-agent']
+    }
+  });
+});
+
+// CORS test endpoint
+app.get("/api/cors-test", (req, res) => {
+  res.json({
+    success: true,
+    message: "CORS test successful",
+    origin: req.headers.origin,
     timestamp: new Date().toISOString()
   });
 });
