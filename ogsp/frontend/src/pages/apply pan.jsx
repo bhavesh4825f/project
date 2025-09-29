@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import PaymentModal from "../components/PaymentModal";
 import SuccessToast from "../components/SuccessToast";
+import { API_BASE_URL } from "../config/api";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const PanCard = () => {
