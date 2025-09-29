@@ -66,14 +66,18 @@ app.get("/api/health", (req, res) => {
 // Database connectivity test
 app.get("/api/db-test", async (req, res) => {
   try {
-    const mongoose = require('mongoose');
-    
     res.json({
       success: true,
       message: "Database connection test",
       mongodb: {
         connected: mongoose.connection.readyState === 1,
         state: mongoose.connection.readyState,
+        stateText: {
+          0: 'disconnected',
+          1: 'connected', 
+          2: 'connecting',
+          3: 'disconnecting'
+        }[mongoose.connection.readyState],
         host: mongoose.connection.host,
         name: mongoose.connection.name
       },
@@ -87,6 +91,33 @@ app.get("/api/db-test", async (req, res) => {
       timestamp: new Date().toISOString()
     });
   }
+});
+
+// Environment variables check (for debugging)
+app.get("/api/env-check", (req, res) => {
+  res.json({
+    success: true,
+    message: "Environment variables check",
+    env: {
+      NODE_ENV: process.env.NODE_ENV,
+      PORT: process.env.PORT,
+      MONGO_URI_EXISTS: !!process.env.MONGO_URI,
+      MONGO_URI_TYPE: process.env.MONGO_URI ? 
+        (process.env.MONGO_URI.includes('mongodb.net') ? 'MongoDB Atlas' : 
+         process.env.MONGO_URI.includes('localhost') ? 'Local MongoDB' : 'Other') : 'Not Set'
+    },
+    mongodb: {
+      connected: mongoose.connection.readyState === 1,
+      state: mongoose.connection.readyState,
+      stateText: {
+        0: 'disconnected',
+        1: 'connected', 
+        2: 'connecting',
+        3: 'disconnecting'
+      }[mongoose.connection.readyState]
+    },
+    timestamp: new Date().toISOString()
+  });
 });
 
 // ---------------------
@@ -105,15 +136,29 @@ app.use("/api/service", serviceRoutes);
 // ---------------------
 const mongoUri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/ogsp";
 
+console.log("🔍 MongoDB Connection Info:");
+console.log("Environment:", process.env.NODE_ENV);
+console.log("MONGO_URI exists:", !!process.env.MONGO_URI);
+console.log("Using connection:", mongoUri.replace(/\/\/.*@/, '//***:***@')); // Hide credentials
+
 if (mongoUri) {
   mongoose
     .connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
-    .then(() => console.log("✅ MongoDB connected"))
+    .then(() => {
+      console.log("✅ MongoDB connected successfully");
+      console.log("Database name:", mongoose.connection.name);
+      console.log("Connection state:", mongoose.connection.readyState);
+    })
     .catch((err) => {
       console.error("❌ MongoDB connection error:", err);
+      console.error("Error details:", {
+        name: err.name,
+        message: err.message,
+        code: err.code
+      });
       console.log("⚠️ Continuing without MongoDB - some features may not work");
     });
 } else {
