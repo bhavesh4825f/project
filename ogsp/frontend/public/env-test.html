@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Environment Test</title>
+</head>
+<body>
+    <h1>Environment Variables Test</h1>
+    <div id="env-info"></div>
+    
+    <script>
+        // This will show what environment variables are available
+        const envInfo = document.getElementById('env-info');
+        envInfo.innerHTML = `
+            <p><strong>Current URL:</strong> ${window.location.origin}</p>
+            <p><strong>Build Time:</strong> ${new Date().toISOString()}</p>
+            <p><strong>API Base URL (if available):</strong> Check console</p>
+        `;
+        
+        console.log('=== ENVIRONMENT TEST ===');
+        console.log('Window location:', window.location.origin);
+        console.log('Build timestamp:', new Date().toISOString());
+        console.log('Environment variables are only available in React app context');
+        
+        // Test backend connectivity
+        fetch('https://project-bj5p.onrender.com/api/health')
+            .then(res => res.json())
+            .then(data => {
+                console.log('Backend health check:', data);
+                envInfo.innerHTML += `<p><strong>Backend Status:</strong> ✅ Connected</p>`;
+            })
+            .catch(err => {
+                console.error('Backend connection failed:', err);
+                envInfo.innerHTML += `<p><strong>Backend Status:</strong> ❌ Failed</p>`;
+            });
+            
+        // Test services endpoint
+        fetch('https://project-bj5p.onrender.com/api/service/active')
+            .then(res => res.json())
+            .then(data => {
+                console.log('Services response:', data);
+                envInfo.innerHTML += `<p><strong>Services:</strong> ✅ ${data.services?.length || 0} services loaded</p>`;
+            })
+            .catch(err => {
+                console.error('Services failed:', err);
+                envInfo.innerHTML += `<p><strong>Services:</strong> ❌ Failed to load</p>`;
+            });
+    </script>
+</body>
+</html>
