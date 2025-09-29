@@ -149,22 +149,17 @@ router.post("/create-admin", async (req, res) => {
       });
     }
 
-    // Create admin user
+    // Create admin user with correct schema
     const hashedPassword = await bcrypt.hash("admin123", 12);
     
     const adminUser = new User({
+      username: "admin",
       email: "admin@ogsp.gov.in",
+      mno: "9999999999",
       password: hashedPassword,
       role: "admin",
-      profile: {
-        fullName: "System Administrator",
-        phoneNumber: "9999999999",
-        isVerified: true,
-        kycDocuments: {
-          isSubmitted: true,
-          isVerified: true
-        }
-      }
+      address: "Government Office",
+      birthdate: "1990-01-01"
     });
 
     await adminUser.save();
