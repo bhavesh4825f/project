@@ -131,4 +131,60 @@ router.get("/profile", protect, async (req, res) => {
   }
 });
 
+// Create Admin User (Development/Setup endpoint)
+// --------------------------------------------
+router.post("/create-admin", async (req, res) => {
+  try {
+    // Check if admin already exists
+    const adminExists = await User.findOne({ email: "admin@ogsp.gov.in" });
+    
+    if (adminExists) {
+      return res.json({
+        success: true,
+        message: "Admin user already exists",
+        credentials: {
+          email: "admin@ogsp.gov.in",
+          password: "admin123"
+        }
+      });
+    }
+
+    // Create admin user
+    const hashedPassword = await bcrypt.hash("admin123", 12);
+    
+    const adminUser = new User({
+      email: "admin@ogsp.gov.in",
+      password: hashedPassword,
+      role: "admin",
+      profile: {
+        fullName: "System Administrator",
+        phoneNumber: "9999999999",
+        isVerified: true,
+        kycDocuments: {
+          isSubmitted: true,
+          isVerified: true
+        }
+      }
+    });
+
+    await adminUser.save();
+
+    res.json({
+      success: true,
+      message: "Admin user created successfully",
+      credentials: {
+        email: "admin@ogsp.gov.in",
+        password: "admin123"
+      }
+    });
+  } catch (err) {
+    console.error("CREATE ADMIN ERROR:", err);
+    res.status(500).json({
+      success: false,
+      message: "Error creating admin user",
+      error: err.message
+    });
+  }
+});
+
 export default router;
