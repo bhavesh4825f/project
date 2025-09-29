@@ -1,8 +1,10 @@
 {
-  "buildCommand": "npm run build",
+  "version": 2,
+  "name": "ogsp",
+  "buildCommand": "cd ogsp/frontend && npm install && npm run build",
   "outputDirectory": "ogsp/frontend/build",
-  "installCommand": "npm install",
-  "devCommand": "npm start",
+  "installCommand": null,
+  "framework": null,
   "env": {
     "REACT_APP_API_BASE_URL": "https://project-bj5p.onrender.com"
   }

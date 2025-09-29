@@ -1,0 +1,5 @@
+DEPLOYMENT TRIGGER: Fix Vercel configuration and force redeploy
+Timestamp: 2025-09-29 07:35:00
+Latest commit should be: d90a285
+
+This file is created to trigger a new Vercel deployment with the correct configuration.
