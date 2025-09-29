@@ -11,19 +11,133 @@ const router = express.Router();
 // ---------------------
 router.get("/active", async (req, res) => {
   try {
+    console.log("Fetching active services...");
+    
+    // Check if we can connect to database
     const services = await Service.find({ isActive: true })
       .select("-__v")
       .sort({ displayOrder: 1, createdAt: 1 });
 
+    console.log(`Found ${services.length} active services`);
+
     res.json({
       success: true,
-      services
+      services,
+      count: services.length
     });
   } catch (err) {
     console.error("GET ACTIVE SERVICES ERROR:", err);
+    console.error("Error details:", {
+      name: err.name,
+      message: err.message,
+      stack: err.stack
+    });
+    
     res.status(500).json({
       success: false,
-      message: "Server error while fetching services"
+      message: "Server error while fetching services",
+      error: process.env.NODE_ENV === 'development' ? err.message : 'Database connection error'
+    });
+  }
+});
+
+// ---------------------
+// Initialize Default Services (Public - for setup)
+// ---------------------
+router.get("/init-services", async (req, res) => {
+  try {
+    // Check if services already exist
+    const existingServices = await Service.find({});
+    
+    if (existingServices.length > 0) {
+      return res.json({
+        success: true,
+        message: "Services already exist",
+        count: existingServices.length,
+        services: existingServices
+      });
+    }
+
+    // Create default services
+    const defaultServices = [
+      {
+        name: "PAN Card Application",
+        displayName: "PAN Card Application",
+        description: "Apply for a new PAN card or correction in existing PAN card",
+        isActive: true,
+        displayOrder: 1,
+        pricing: {
+          serviceFee: 107,
+          consultancyCharge: 20
+        },
+        formFields: [
+          { fieldName: "fullName", displayName: "Full Name", type: "text", required: true },
+          { fieldName: "fatherName", displayName: "Father's Name", type: "text", required: true },
+          { fieldName: "dateOfBirth", displayName: "Date of Birth", type: "date", required: true },
+          { fieldName: "mobileNumber", displayName: "Mobile Number", type: "tel", required: true },
+          { fieldName: "email", displayName: "Email Address", type: "email", required: true }
+        ],
+        requiredDocuments: [
+          { fieldName: "adharcard", displayName: "Aadhar Card", required: true },
+          { fieldName: "passport_photo", displayName: "Passport Photo", required: true }
+        ]
+      },
+      {
+        name: "Income Certificate",
+        displayName: "Income Certificate",
+        description: "Apply for income certificate for various purposes",
+        isActive: true,
+        displayOrder: 2,
+        pricing: {
+          serviceFee: 30,
+          consultancyCharge: 20
+        },
+        formFields: [
+          { fieldName: "applicantName", displayName: "Applicant Name", type: "text", required: true },
+          { fieldName: "mobileNumber", displayName: "Mobile Number", type: "tel", required: true },
+          { fieldName: "email", displayName: "Email Address", type: "email", required: true }
+        ],
+        requiredDocuments: [
+          { fieldName: "adhar_card", displayName: "Aadhar Card", required: true },
+          { fieldName: "passport_photo", displayName: "Passport Photo", required: true }
+        ]
+      },
+      {
+        name: "Birth Certificate",
+        displayName: "Birth Certificate",
+        description: "Apply for birth certificate",
+        isActive: true,
+        displayOrder: 3,
+        pricing: {
+          serviceFee: 25,
+          consultancyCharge: 20
+        },
+        formFields: [
+          { fieldName: "applicantName", displayName: "Applicant Name", type: "text", required: true },
+          { fieldName: "dateOfBirth", displayName: "Date of Birth", type: "date", required: true },
+          { fieldName: "placeOfBirth", displayName: "Place of Birth", type: "text", required: true }
+        ],
+        requiredDocuments: [
+          { fieldName: "documents", displayName: "Supporting Documents", required: true }
+        ]
+      }
+    ];
+
+    const createdServices = await Service.insertMany(defaultServices);
+
+    res.json({
+      success: true,
+      message: "Default services created successfully",
+      count: createdServices.length,
+      services: createdServices
+    });
+
+  } catch (err) {
+    console.error("INIT SERVICES ERROR:", err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to initialize services",
+      error: err.message
     });
   }
 });

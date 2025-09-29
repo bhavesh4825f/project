@@ -63,6 +63,32 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// Database connectivity test
+app.get("/api/db-test", async (req, res) => {
+  try {
+    const mongoose = require('mongoose');
+    
+    res.json({
+      success: true,
+      message: "Database connection test",
+      mongodb: {
+        connected: mongoose.connection.readyState === 1,
+        state: mongoose.connection.readyState,
+        host: mongoose.connection.host,
+        name: mongoose.connection.name
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Database test failed",
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // ---------------------
 // API Routes
 // ---------------------
