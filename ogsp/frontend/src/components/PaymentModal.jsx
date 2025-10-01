@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const PaymentModal = ({ show, onHide, application, onPaymentSuccess }) => {
+const PaymentModal = ({ isOpen, onClose, applicationId, serviceType, onPaymentSuccess, onCancel }) => {
   const [paymentMethod, setPaymentMethod] = useState('online');
   const [loading, setLoading] = useState(false);
 
@@ -12,11 +12,11 @@ const PaymentModal = ({ show, onHide, application, onPaymentSuccess }) => {
       
       // Call success callback
       if (onPaymentSuccess) {
-        onPaymentSuccess(application.id);
+        onPaymentSuccess(applicationId);
       }
       
       alert('Payment successful!');
-      onHide();
+      if (onClose) onClose();
     } catch (error) {
       alert('Payment failed. Please try again.');
     } finally {
@@ -24,7 +24,12 @@ const PaymentModal = ({ show, onHide, application, onPaymentSuccess }) => {
     }
   };
 
-  if (!show) return null;
+  const handleCancel = () => {
+    if (onCancel) onCancel();
+    if (onClose) onClose();
+  };
+
+  if (!isOpen) return null;
 
   return (
     <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1">
@@ -32,32 +37,30 @@ const PaymentModal = ({ show, onHide, application, onPaymentSuccess }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Payment Details</h5>
-            <button type="button" className="btn-close" onClick={onHide}></button>
+            <button type="button" className="btn-close" onClick={handleCancel}></button>
           </div>
           <div className="modal-body">
-            {application && (
-              <div>
-                <h6>Application: {application.serviceName}</h6>
-                <p><strong>Fee:</strong> ₹{application.fee || 500}</p>
-                <p><strong>Application ID:</strong> {application.id}</p>
-                
-                <div className="mt-3">
-                  <label className="form-label">Payment Method</label>
-                  <select 
-                    className="form-select" 
-                    value={paymentMethod} 
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                  >
-                    <option value="online">Online Payment</option>
-                    <option value="upi">UPI Payment</option>
-                    <option value="card">Credit/Debit Card</option>
-                  </select>
-                </div>
+            <div>
+              <h6>Application: {serviceType}</h6>
+              <p><strong>Fee:</strong> ₹500</p>
+              <p><strong>Application ID:</strong> {applicationId}</p>
+              
+              <div className="mt-3">
+                <label className="form-label">Payment Method</label>
+                <select 
+                  className="form-select" 
+                  value={paymentMethod} 
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                >
+                  <option value="online">Online Payment</option>
+                  <option value="upi">UPI Payment</option>
+                  <option value="card">Credit/Debit Card</option>
+                </select>
               </div>
-            )}
+            </div>
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={onHide}>
+            <button type="button" className="btn btn-secondary" onClick={handleCancel}>
               Cancel
             </button>
             <button 
