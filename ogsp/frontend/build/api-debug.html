@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Configuration Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        .result { margin: 10px 0; padding: 10px; border-radius: 4px; background: #f8f9fa; border: 1px solid #dee2e6; }
+        .error { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+        .success { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 API Configuration Debug</h1>
+        
+        <div class="result">
+            <strong>Expected API Base URL:</strong> https://project-bj5p.onrender.com<br>
+            <strong>Frontend URL:</strong> <span id="frontend-url"></span><br>
+            <strong>Current Protocol:</strong> <span id="protocol"></span>
+        </div>
+        
+        <button onclick="testDirectAPI()">Test Direct API Call</button>
+        <button onclick="testCORS()">Test CORS</button>
+        <button onclick="testServices()">Test Services</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://project-bj5p.onrender.com';
+        
+        document.getElementById('frontend-url').textContent = window.location.origin;
+        document.getElementById('protocol').textContent = window.location.protocol;
+        
+        function addResult(title, content, type = 'result') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `result ${type}`;
+            div.innerHTML = `<strong>${title}:</strong><br><pre>${content}</pre>`;
+            results.appendChild(div);
+        }
+        
+        async function testDirectAPI() {
+            document.getElementById('results').innerHTML = '';
+            addResult('Testing API Health', 'Making request to /api/health...');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/health`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const text = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    data = { raw: text };
+                }
+                
+                addResult('API Health Response', JSON.stringify(data, null, 2), 'success');
+            } catch (error) {
+                addResult('API Health Error', `Error: ${error.message}\\nStack: ${error.stack}`, 'error');
+            }
+        }
+        
+        async function testCORS() {
+            addResult('Testing CORS', 'Making CORS request...');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/cors-test`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                addResult('CORS Test Response', JSON.stringify(data, null, 2), 'success');
+            } catch (error) {
+                addResult('CORS Error', `Error: ${error.message}\\nThis indicates a CORS policy issue`, 'error');
+            }
+        }
+        
+        async function testServices() {
+            addResult('Testing Services', 'Making request to /api/service/active...');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/service/active`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                addResult('Services Response', JSON.stringify(data, null, 2), 'success');
+            } catch (error) {
+                addResult('Services Error', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Auto-run tests
+        setTimeout(() => {
+            testDirectAPI();
+        }, 1000);
+    </script>
+</body>
+</html>

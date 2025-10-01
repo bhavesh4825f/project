@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend-Backend Connection Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 4px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .loading { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 Frontend-Backend Connection Test</h1>
+        <p><strong>Frontend URL:</strong> <span id="frontend-url"></span></p>
+        <p><strong>Backend URL:</strong> <span id="backend-url"></span></p>
+        
+        <div>
+            <button onclick="testConnection()">🔄 Test All Connections</button>
+            <button onclick="testHealth()">❤️ Test Health</button>
+            <button onclick="testCORS()">🌐 Test CORS</button>
+            <button onclick="testServices()">📋 Test Services</button>
+        </div>
+        
+        <div id="results"></div>
+        
+        <h3>📊 Test Environment</h3>
+        <div id="environment"></div>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'https://project-bj5p.onrender.com';
+        
+        document.getElementById('frontend-url').textContent = window.location.origin;
+        document.getElementById('backend-url').textContent = BACKEND_URL;
+        
+        function addResult(message, type = 'loading') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            results.appendChild(div);
+            return div;
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        async function testHealth() {
+            clearResults();
+            const result = addResult('🔄 Testing backend health...', 'loading');
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/health`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    result.className = 'test-result success';
+                    result.innerHTML = `✅ Backend Health: SUCCESS<br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    result.className = 'test-result error';
+                    result.innerHTML = `❌ Backend Health: FAILED (${response.status})<br>Response: ${response.statusText}`;
+                }
+            } catch (error) {
+                result.className = 'test-result error';
+                result.innerHTML = `❌ Backend Health: ERROR<br>Error: ${error.message}`;
+            }
+        }
+        
+        async function testCORS() {
+            const result = addResult('🌐 Testing CORS...', 'loading');
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/cors-test`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    result.className = 'test-result success';
+                    result.innerHTML = `✅ CORS: SUCCESS<br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    result.className = 'test-result error';
+                    result.innerHTML = `❌ CORS: FAILED (${response.status})<br>Response: ${response.statusText}`;
+                }
+            } catch (error) {
+                result.className = 'test-result error';
+                result.innerHTML = `❌ CORS: ERROR<br>Error: ${error.message}<br>This usually indicates a CORS policy issue.`;
+            }
+        }
+        
+        async function testServices() {
+            const result = addResult('📋 Testing services endpoint...', 'loading');
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/service/active`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    result.className = 'test-result success';
+                    result.innerHTML = `✅ Services: SUCCESS (${data.services?.length || 0} services)<br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    result.className = 'test-result error';
+                    result.innerHTML = `❌ Services: FAILED (${response.status})<br>Response: ${response.statusText}`;
+                }
+            } catch (error) {
+                result.className = 'test-result error';
+                result.innerHTML = `❌ Services: ERROR<br>Error: ${error.message}`;
+            }
+        }
+        
+        async function testConnection() {
+            clearResults();
+            await testHealth();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testCORS();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testServices();
+        }
+        
+        // Show environment info
+        document.getElementById('environment').innerHTML = `
+            <pre>User Agent: ${navigator.userAgent}
+Location: ${window.location.href}
+Protocol: ${window.location.protocol}
+Host: ${window.location.host}
+Origin: ${window.location.origin}</pre>
+        `;
+        
+        // Auto-test on page load
+        setTimeout(testConnection, 1000);
+    </script>
+</body>
+</html>

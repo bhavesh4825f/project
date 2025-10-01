@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Frontend-Backend Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        .loading { background: #fff3cd; border-color: #ffeaa7; color: #856404; }
+        button { padding: 8px 16px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; font-size: 12px; }
+        .form-group { margin: 10px 0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { padding: 8px; width: 200px; border: 1px solid #ddd; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 Complete Frontend-Backend Connection Test</h1>
+        
+        <div class="test-section">
+            <h3>📡 Connection Tests</h3>
+            <button onclick="testHealth()">Test Health</button>
+            <button onclick="testCORS()">Test CORS</button>
+            <button onclick="testServices()">Test Services</button>
+            <button onclick="runAllTests()">Run All Tests</button>
+            <div id="connection-results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔐 Authentication Tests</h3>
+            
+            <div style="display: flex; gap: 20px;">
+                <div>
+                    <h4>User Registration</h4>
+                    <div class="form-group">
+                        <label>Username:</label>
+                        <input type="text" id="reg-username" value="testuser2" />
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" id="reg-email" value="testuser2@example.com" />
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile:</label>
+                        <input type="text" id="reg-mobile" value="9876543211" />
+                    </div>
+                    <div class="form-group">
+                        <label>Password:</label>
+                        <input type="password" id="reg-password" value="testpass123" />
+                    </div>
+                    <button onclick="testRegistration()">Test Registration</button>
+                </div>
+                
+                <div>
+                    <h4>User Login</h4>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" id="login-email" value="testuser@example.com" />
+                    </div>
+                    <div class="form-group">
+                        <label>Password:</label>
+                        <input type="password" id="login-password" value="testpass123" />
+                    </div>
+                    <button onclick="testLogin()">Test Login</button>
+                    <button onclick="testAdminLogin()">Test Admin Login</button>
+                </div>
+            </div>
+            
+            <div id="auth-results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🌐 Network Information</h3>
+            <div id="network-info"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 All Results</h3>
+            <button onclick="clearResults()">Clear All Results</button>
+            <div id="all-results"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://project-bj5p.onrender.com';
+        
+        function addResult(message, type = 'loading', containerId = 'all-results') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `test-section ${type}`;
+            div.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>${message}`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+            return div;
+        }
+        
+        function clearResults() {
+            document.getElementById('all-results').innerHTML = '';
+        }
+        
+        async function testHealth() {
+            const result = addResult('🔄 Testing backend health...', 'loading');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/health`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    result.className = 'test-section success';
+                    result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>✅ <strong>Health Check: SUCCESS</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    result.className = 'test-section error';
+                    result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>❌ <strong>Health Check: FAILED (${response.status})</strong><br>Response: ${response.statusText}`;
+                }
+            } catch (error) {
+                result.className = 'test-section error';
+                result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>❌ <strong>Health Check: ERROR</strong><br>Error: ${error.message}`;
+            }
+        }
+        
+        async function testCORS() {
+            const result = addResult('🌐 Testing CORS...', 'loading');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/cors-test`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    result.className = 'test-section success';
+                    result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>✅ <strong>CORS: SUCCESS</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    result.className = 'test-section error';
+                    result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>❌ <strong>CORS: FAILED (${response.status})</strong><br>Response: ${response.statusText}`;
+                }
+            } catch (error) {
+                result.className = 'test-section error';
+                result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>❌ <strong>CORS: ERROR</strong><br>Error: ${error.message}<br><em>This usually indicates a CORS policy block</em>`;
+            }
+        }
+        
+        async function testServices() {
+            const result = addResult('📋 Testing services...', 'loading');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/service/active`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    result.className = 'test-section success';
+                    result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>✅ <strong>Services: SUCCESS (${data.services?.length || 0} services)</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    result.className = 'test-section error';
+                    result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>❌ <strong>Services: FAILED (${response.status})</strong><br>Response: ${response.statusText}`;
+                }
+            } catch (error) {
+                result.className = 'test-section error';
+                result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>❌ <strong>Services: ERROR</strong><br>Error: ${error.message}`;
+            }
+        }
+        
+        async function testRegistration() {
+            const result = addResult('👤 Testing user registration...', 'loading');
+            const userData = {
+                username: document.getElementById('reg-username').value,
+                email: document.getElementById('reg-email').value,
+                mno: document.getElementById('reg-mobile').value,
+                password: document.getElementById('reg-password').value,
+                cpassword: document.getElementById('reg-password').value
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    result.className = 'test-section success';
+                    result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>✅ <strong>Registration: SUCCESS</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    result.className = 'test-section error';
+                    result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>❌ <strong>Registration: FAILED</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                }
+            } catch (error) {
+                result.className = 'test-section error';
+                result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>❌ <strong>Registration: ERROR</strong><br>Error: ${error.message}`;
+            }
+        }
+        
+        async function testLogin() {
+            const result = addResult('🔑 Testing user login...', 'loading');
+            const loginData = {
+                email: document.getElementById('login-email').value,
+                password: document.getElementById('login-password').value
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    result.className = 'test-section success';
+                    result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>✅ <strong>Login: SUCCESS</strong><br><pre>${JSON.stringify({...data, token: data.token ? data.token.substring(0, 50) + '...' : 'No token'}, null, 2)}</pre>`;
+                } else {
+                    result.className = 'test-section error';
+                    result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>❌ <strong>Login: FAILED</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                }
+            } catch (error) {
+                result.className = 'test-section error';
+                result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>❌ <strong>Login: ERROR</strong><br>Error: ${error.message}`;
+            }
+        }
+        
+        async function testAdminLogin() {
+            const result = addResult('👑 Testing admin login...', 'loading');
+            const adminData = {
+                email: 'admin@ogsp.gov.in',
+                password: 'admin123'
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(adminData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    result.className = 'test-section success';
+                    result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>✅ <strong>Admin Login: SUCCESS</strong><br><pre>${JSON.stringify({...data, token: data.token ? data.token.substring(0, 50) + '...' : 'No token'}, null, 2)}</pre>`;
+                } else {
+                    result.className = 'test-section error';
+                    result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>❌ <strong>Admin Login: FAILED</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                }
+            } catch (error) {
+                result.className = 'test-section error';
+                result.innerHTML = `<small>${new Date().toLocaleTimeString()}</small><br>❌ <strong>Admin Login: ERROR</strong><br>Error: ${error.message}`;
+            }
+        }
+        
+        async function runAllTests() {
+            clearResults();
+            addResult('🚀 Starting comprehensive test suite...', 'loading');
+            
+            await testHealth();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await testCORS();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await testServices();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            addResult('✅ All connection tests completed!', 'success');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const networkInfo = document.getElementById('network-info');
+            networkInfo.innerHTML = `
+                <pre>Frontend URL: ${window.location.origin}
+Backend URL: ${API_BASE_URL}
+User Agent: ${navigator.userAgent}
+Protocol: ${window.location.protocol}
+Timestamp: ${new Date().toISOString()}</pre>
+            `;
+            
+            // Auto-run basic tests
+            setTimeout(runAllTests, 1000);
+        });
+    </script>
+</body>
+</html>

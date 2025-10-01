@@ -16,7 +16,7 @@ const ApplicationDetails = () => {
   const fetchApplicationDetails = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/api/applications/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/application/details/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -25,9 +25,14 @@ const ApplicationDetails = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setApplication(data);
+        if (data.success) {
+          setApplication(data.application);
+        } else {
+          console.error('API returned error:', data.message);
+        }
       } else {
-        console.error('Failed to fetch application details');
+        const errorData = await response.json();
+        console.error('Failed to fetch application details:', errorData.message);
       }
     } catch (error) {
       console.error('Error fetching application details:', error);
