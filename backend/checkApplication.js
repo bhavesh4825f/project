@@ -18,7 +18,7 @@ const connectDB = async () => {
 const checkApplication = async () => {
   await connectDB();
   
-  const applicationId = "68dcbb4a325526f817ce2966";
+  const applicationId = "68dcbe022e53e52579dca0fb";
   console.log("Checking application ID:", applicationId);
   
   try {
@@ -33,13 +33,16 @@ const checkApplication = async () => {
     
     if (application) {
       console.log("✅ Application found!");
-      console.log("Application details:", {
-        id: application._id,
-        userId: application.userId,
-        serviceType: application.serviceType,
-        status: application.status,
-        createdAt: application.createdAt
-      });
+      console.log("Full application object:");
+      console.log(JSON.stringify(application, null, 2));
+      
+      console.log("\nDate fields specifically:");
+      console.log("createdAt:", application.createdAt);
+      console.log("updatedAt:", application.updatedAt);
+      console.log("submittedAt:", application.submittedAt);
+      
+      console.log("\nApplication data:");
+      console.log("applicationData:", application.applicationData);
     } else {
       console.log("❌ Application not found in database");
       

@@ -115,11 +115,11 @@ const ApplicationDetails = () => {
                           </tr>
                           <tr>
                             <td><strong>Submitted Date:</strong></td>
-                            <td>{application.createdAt ? new Date(application.createdAt).toLocaleDateString() : 'N/A'}</td>
+                            <td>{application.submittedAt ? new Date(application.submittedAt).toLocaleDateString() : (application.createdAt ? new Date(application.createdAt).toLocaleDateString() : 'N/A')}</td>
                           </tr>
                           <tr>
                             <td><strong>Last Updated:</strong></td>
-                            <td>{application.updatedAt ? new Date(application.updatedAt).toLocaleDateString() : 'N/A'}</td>
+                            <td>{application.updatedAt ? new Date(application.updatedAt).toLocaleDateString() : (application.submittedAt ? new Date(application.submittedAt).toLocaleDateString() : 'N/A')}</td>
                           </tr>
                         </tbody>
                       </table>
