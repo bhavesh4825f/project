@@ -163,6 +163,8 @@ router.get("/my-applications", protect, async (req, res) => {
   try {
     const applications = await Application.find({ userId: req.userId })
       .sort({ submittedAt: -1 })
+      .populate("userId", "username email")
+      .populate("serviceId", "displayName pricing")
       .populate("processedBy", "username");
 
     res.json({ success: true, applications });
@@ -192,6 +194,7 @@ router.get("/all", protect, async (req, res) => {
     const applications = await Application.find()
       .sort({ submittedAt: -1 })
       .populate("userId", "username email")
+      .populate("serviceId", "displayName pricing") 
       .populate("processedBy", "username");
 
     res.json({ success: true, applications });
@@ -376,7 +379,10 @@ router.get("/my-documents", protect, async (req, res) => {
 // ---------------------
 router.get("/all-debug", protect, async (req, res) => {
   try {
-    const applications = await Application.find({}).populate("userId", "username email");
+    const applications = await Application.find({})
+      .populate("userId", "username email")
+      .populate("serviceId", "displayName pricing")
+      .populate("processedBy", "username");
     
     console.log("ALL APPLICATIONS DEBUG:");
     applications.forEach(app => {

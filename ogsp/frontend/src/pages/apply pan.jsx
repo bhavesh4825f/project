@@ -12,6 +12,13 @@ const PanCard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
+    fullName: "",
+    fatherName: "",
+    motherName: "",
+    dateOfBirth: "",
+    phoneNumber: "",
+    email: "",
+    address: "",
     adharcard: null,
     passport_photo: null,
   });
@@ -38,9 +45,11 @@ const PanCard = () => {
   }, [navigate]);
 
   const handleChange = (e) => {
-    const { name, files } = e.target;
+    const { name, value, files } = e.target;
     if (files) {
       setFormData({ ...formData, [name]: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
     }
   };
 
@@ -72,7 +81,17 @@ const PanCard = () => {
         setSuccess("PAN Card application submitted successfully!");
         setApplicationId(res.data.applicationId);
         setShowPayment(true);
-        setFormData({ adharcard: null, passport_photo: null });
+        setFormData({ 
+          fullName: "",
+          fatherName: "",
+          motherName: "",
+          dateOfBirth: "",
+          phoneNumber: "",
+          email: "",
+          address: "",
+          adharcard: null, 
+          passport_photo: null 
+        });
         // Clear file inputs
         document.querySelectorAll('input[type="file"]').forEach(input => input.value = '');
       } else {
@@ -131,8 +150,98 @@ const PanCard = () => {
 
       {!showPayment ? (
         <form onSubmit={handleSubmit} className="row g-3" encType="multipart/form-data">
+          {/* Personal Information */}
+          <div className="col-12"><h5>Personal Information</h5></div>
+          
           <div className="col-md-6">
-            <label>Adhar Card *</label>
+            <label className="form-label">Full Name *</label>
+            <input 
+              type="text" 
+              name="fullName" 
+              value={formData.fullName}
+              className="form-control" 
+              onChange={handleChange}
+              required 
+            />
+          </div>
+
+          <div className="col-md-6">
+            <label className="form-label">Father's Name *</label>
+            <input 
+              type="text" 
+              name="fatherName" 
+              value={formData.fatherName}
+              className="form-control" 
+              onChange={handleChange}
+              required 
+            />
+          </div>
+
+          <div className="col-md-6">
+            <label className="form-label">Mother's Name *</label>
+            <input 
+              type="text" 
+              name="motherName" 
+              value={formData.motherName}
+              className="form-control" 
+              onChange={handleChange}
+              required 
+            />
+          </div>
+
+          <div className="col-md-6">
+            <label className="form-label">Date of Birth *</label>
+            <input 
+              type="date" 
+              name="dateOfBirth" 
+              value={formData.dateOfBirth}
+              className="form-control" 
+              onChange={handleChange}
+              required 
+            />
+          </div>
+
+          <div className="col-md-6">
+            <label className="form-label">Phone Number *</label>
+            <input 
+              type="tel" 
+              name="phoneNumber" 
+              value={formData.phoneNumber}
+              className="form-control" 
+              onChange={handleChange}
+              required 
+            />
+          </div>
+
+          <div className="col-md-6">
+            <label className="form-label">Email *</label>
+            <input 
+              type="email" 
+              name="email" 
+              value={formData.email}
+              className="form-control" 
+              onChange={handleChange}
+              required 
+            />
+          </div>
+
+          <div className="col-12">
+            <label className="form-label">Address *</label>
+            <textarea 
+              name="address" 
+              value={formData.address}
+              className="form-control" 
+              rows="3"
+              onChange={handleChange}
+              required 
+            ></textarea>
+          </div>
+
+          {/* Document Upload */}
+          <div className="col-12"><h5>Required Documents</h5></div>
+          
+          <div className="col-md-6">
+            <label className="form-label">Adhar Card *</label>
             <input 
               type="file" 
               name="adharcard" 
@@ -144,7 +253,7 @@ const PanCard = () => {
             <small className="text-muted">Upload your Aadhar card (PDF, JPG, PNG)</small>
           </div>
           <div className="col-md-6">
-            <label>Passport Photo *</label>
+            <label className="form-label">Passport Photo *</label>
             <input 
               type="file" 
               name="passport_photo" 
@@ -168,7 +277,17 @@ const PanCard = () => {
               type="reset" 
               className="btn btn-secondary w-45" 
               onClick={() => {
-                setFormData({ adharcard: null, passport_photo: null });
+                setFormData({ 
+                  fullName: "",
+                  fatherName: "",
+                  motherName: "",
+                  dateOfBirth: "",
+                  phoneNumber: "",
+                  email: "",
+                  address: "",
+                  adharcard: null, 
+                  passport_photo: null 
+                });
                 document.querySelectorAll('input[type="file"]').forEach(input => input.value = '');
               }}
               disabled={loading}
