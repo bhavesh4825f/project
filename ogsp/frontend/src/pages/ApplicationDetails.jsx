@@ -107,7 +107,7 @@ const ApplicationDetails = () => {
                           </tr>
                           <tr>
                             <td><strong>Service:</strong></td>
-                            <td>{application.serviceName}</td>
+                            <td>{application.serviceId?.displayName || application.applicationType || 'N/A'}</td>
                           </tr>
                           <tr>
                             <td><strong>Status:</strong></td>
@@ -115,11 +115,11 @@ const ApplicationDetails = () => {
                           </tr>
                           <tr>
                             <td><strong>Submitted Date:</strong></td>
-                            <td>{new Date(application.createdAt).toLocaleDateString()}</td>
+                            <td>{application.createdAt ? new Date(application.createdAt).toLocaleDateString() : 'N/A'}</td>
                           </tr>
                           <tr>
                             <td><strong>Last Updated:</strong></td>
-                            <td>{new Date(application.updatedAt).toLocaleDateString()}</td>
+                            <td>{application.updatedAt ? new Date(application.updatedAt).toLocaleDateString() : 'N/A'}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -132,19 +132,19 @@ const ApplicationDetails = () => {
                         <tbody>
                           <tr>
                             <td><strong>Name:</strong></td>
-                            <td>{application.fullName}</td>
+                            <td>{application.userId?.username || application.applicationData?.fullName || 'N/A'}</td>
                           </tr>
                           <tr>
                             <td><strong>Email:</strong></td>
-                            <td className="text-break">{application.email}</td>
+                            <td className="text-break">{application.userId?.email || application.applicationData?.email || 'N/A'}</td>
                           </tr>
                           <tr>
                             <td><strong>Phone:</strong></td>
-                            <td>{application.phoneNumber}</td>
+                            <td>{application.applicationData?.phoneNumber || application.applicationData?.phone || 'N/A'}</td>
                           </tr>
                           <tr>
                             <td><strong>Address:</strong></td>
-                            <td className="text-break">{application.address}</td>
+                            <td className="text-break">{application.applicationData?.address || 'N/A'}</td>
                           </tr>
                         </tbody>
                       </table>
